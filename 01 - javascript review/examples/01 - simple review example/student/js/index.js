@@ -7,8 +7,8 @@ HTML for list topic list item
 </li>
 */
 // 1. Select the form and topic list elements
-let topicForm = document.querySelector('.new-topic-form')
-let topicList = document.querySelector('.topic-list')
+let topicForm = document.querySelector(".new-topic-form")
+let topicList = document.querySelector(".topics-list")
 
 // 5. create a function to add the text input to the topic list
 const addTopicToPage = (topicName, topicListElement) => {
