@@ -27,3 +27,17 @@ document.getElementById("searchbox").addEventListener("input", (e) => {
     expenses.addExpense(...theExpenses);
   }
 });
+
+
+// Step 7: handle form submission via publisher, automatically triggering UI update
+document.getElementById("expense-form-add").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const title = document.getElementById("title").value;
+    const category = document.getElementById("category").value;
+    const date = document.getElementById("date").value;
+    const amount = document.getElementById("amount").value;
+    if(title && category && date && amount) {
+        expenses.addExpense({title, category, date, amount});
+        e.target.reset();
+    }
+});
