@@ -45,55 +45,19 @@ class ResourceResults extends HTMLElement {
   }
 
   #applyFilters() {
-    // Now that I'm sure of the data shape, I can prepare work on this.
     const { searchQuery, category, openNow, virtual } = this.#filters;
     const q = searchQuery.trim().toLowerCase();
 
     this.#filteredResults = this.#results.filter(
-      // Yup, big comments. For what you'll learn, you'll hate me this weekend, and thank me later!
       (item) => {
-        // Include the item filteredResults if this function returns truthy.
-        // Item must pass ALL checks below (searchbox, category, checkboxes).
-
-        // ----------------------------------------------------------------------------------------
-        // We can chain the || (OR) operator for conciseness. 
-        //   condition1 || condition2 || condition3 ...
-        //
-        // Returns the first truthy value, then stops — just like if -> else if -> else chains!
-        // If nothing works out along the way, it just returns the last value.
-
-        // We can repurpose this as:    
-        //   !filterWasUsed || condition1 || condition2 ... 
-        // 
-        // If filter was *not used*, any value is acceptable -> pass the check immediately.
-        // Otherwise, continue down the chain of conditions until something matches (or you reach the last term).
-        // ----------------------------------------------------------------------------------------
-
-
-        // Let's start with the searchbox string.
-        // If we join all relevant text fields into one string, we can just see if our query string is in it.
+        // Look how CLEAN this is!
+        // And now that you know what you're looking at, it'll take you like two seconds to write your filtering logic.
         const matchesSearchQuery = !q || [item.title, item.summary, item.location].join(' ').toLowerCase().includes(q);
-        // Empty strings are falsey, so:
-        //   1) searchbox empty    -> q is "" -> !q is true  -> returns true, check passes.
-        //   2) searchbox has text            -> !q is false -> .includes() check runs.
-        //      -> if .includes() finds a match: return true, check passes. No match: return false, check fails.
-
-        // Same idea, more terms in the chain.
         const matchesCategory = !category || category === 'all' || 
           item.category.toLowerCase() === category.toLowerCase();
-        // 1) no category specified -> nothing to filter -> return true, chain stops, check passes.
-        // 2) category is 'all'     -> nothing to filter -> return true, chain stops, check passes. 
-        // 3) some other category   -> only pass if item.category matches the string (extracted from the button).
-
-        // I left the checkboxes for last, because starting with them would have been a headache:
-        // "Return true to pass test, but unchecked checkboxes are false, then if it's checked, item.openNow can be true or false".
-        // Yeah no thanks. But now we know what we're looking at:
         const matchesOpenNow = !openNow || item.openNow;
-        // If checkbox is checked, only include item if item.openNow is true 
         const matchesVirtual = !virtual || item.virtual;
-        // If checkbox is checked, only include item if item.virtual is true 
 
-        // Item must have passed ALL checks above (&& is AND) to be included in the filtered array.
         return matchesSearchQuery && matchesCategory && matchesOpenNow && matchesVirtual;
       });
     
