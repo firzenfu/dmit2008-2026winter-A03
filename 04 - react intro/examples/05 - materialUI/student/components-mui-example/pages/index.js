@@ -1,3 +1,4 @@
+import { Box, Container, Typography } from "@mui/material";
 import Head from "next/head";
 
 export default function Home() {
@@ -11,7 +12,14 @@ export default function Home() {
       </Head>
 
       <main>
-
+        <Container maxWidth="sm">
+          this is outside of the Material UI Box component
+          <Box sx={{ my:4, border: '1px dashed grey'}}>this text is inside a Material UI Box component
+            <Typography>
+              MUI looks good
+            </Typography>
+          </Box>
+        </Container>
       </main>
     </>
   );
