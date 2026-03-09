@@ -4,26 +4,22 @@
 
 Interaction with the backend is really important, and you do that via a rest api. The backend is where you'll be storing all of the information and doing process such as notification, creating a search index.
 
-We're going to create the frontend quote generator here and we're going to pick from one of the [quote rest apis here](https://github.com/public-apis/public-apis#personality).
 
-The backend we're going to use today is [ZenQutes](https://zenquotes.io), based on [quotable (docs here)](https://github.com/lukePeavey/quotable).
-To do so.
+The backend we're going to use today is [DummyJSON's quotes endpoint](https://dummyjson.com/quotes).
 
 We're also going to use a rest api client to observe what's going on in the rest request.
 
 # Steps
 
 1. Open your rest api client and get a random quote, so we can see the payload.
-- make a get request to `https://zenquotes.io/api/random` as per the documentation.
+- make a get request to `https://dummyjson.com/quotes/random` as per the documentation.
 You'll see that the response body returns something like this.
 ```json
-[
-  {
-    "q": "The real art in learning takes place as we move beyond proficiency, when our work becomes an expression of our essence.",
-    "a": "Josh Waitzkin",
-    "h": "\u003Cblockquote\u003E&ldquo;The real art in learning takes place as we move beyond proficiency, when our work becomes an expression of our essence.&rdquo; &mdash; \u003Cfooter\u003EJosh Waitzkin\u003C/footer\u003E\u003C/blockquote\u003E"
-  }
-]
+{
+  "id": 533,
+  "quote": "My toughest opponent has always been me.",
+  "author": "Muhammad Ali"
+}
 ```
 2. Navigate in our `rest-fundamentals-example` and run the project.
 Notes:
@@ -91,8 +87,8 @@ const RANDOM_QUOTE_URL = 'https://api.quotable.io/random'
         return response.json()
       }).then((data)=> {
         setQuoteData({
-          quote: data.q,
-          author: data.a
+          quote: data.quote,
+          author: data.author
         })
       })
   }
