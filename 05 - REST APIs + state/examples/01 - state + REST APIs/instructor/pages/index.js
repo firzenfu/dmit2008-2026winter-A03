@@ -1,9 +1,6 @@
 // react hooks
 import { useState } from 'react';
 
-// API functions
-import { getRandomQuote } from './api/quotes.js';
-
 // nextjs copmonents/stylesheets
 import Head from 'next/head'
 import Image from 'next/image'
@@ -20,6 +17,9 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
 
+const BASE_URL = 'https://dummyjson.com/quotes'
+
+
 export default function Home() {
 
   const [quoteData, setQuoteData] = useState({
@@ -28,7 +28,15 @@ export default function Home() {
   })
 
   const handleClick = () => {
-    getRandomQuote()
+    fetch(`${BASE_URL}/random`)
+      .then((response) => {
+        return response.json()
+      }).then((data) => {
+        setQuoteData({
+          quote: data.quote,
+          author: data.author
+        });
+      })
   }
 
   return (
