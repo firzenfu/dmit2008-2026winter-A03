@@ -1,3 +1,6 @@
+// hooks
+import { useState } from 'react';
+
 // nextjs components
 import Head from 'next/head'
 
@@ -26,12 +29,27 @@ import Typography from '@mui/material/Typography';
 import ReviewCard from './components/ReviewCard';
 
 
+const API_BASE_URL = 'http://localhost:5000' 
+
+
 export default function Home() {
-  const MOCK_ADAPTATION_RATING = [{
-    'title': 'Fight Club',
-    'comment': 'Great movie and book',
-    'rating': 10
-  }]
+
+  const [title, setTitle]       = useState("")
+  const [comments, setComments] = useState("")
+  const [rating, setRating]     = useState(0)
+
+  const [reviews, setReviews] = useState([])
+
+
+  const loadReviews = () => {
+    fetch(`${API_BASE_URL}/reviews`) // made my request
+      .then((response) => {
+        return response.json()  // parsed JSON of response into JS objectss
+      }).then((data) => {
+        setReviews(data)
+      })
+  }
+
   return (
     <div>
       <Head>
@@ -54,6 +72,7 @@ export default function Home() {
           <form>
 
             <Grid container spacing={3}>
+
               <Grid item xs={12} sm={12}>
                 <TextField
                   id="title"
@@ -61,6 +80,8 @@ export default function Home() {
                   label="Adaptation Title"
                   fullWidth
                   variant="standard"
+                  value={title}
+                  onChange={(e) => {setTitle(e.target.value)}}
                 />
               </Grid>
 
@@ -71,8 +92,11 @@ export default function Home() {
                   label="Comments"
                   fullWidth
                   variant="standard"
+                  value={comments}
+                  onChange={(e) => {setComments(e.target.value)}}
                 />
               </Grid>
+
               <Grid item xs={12} sm={12}>
                 <FormControl>
                   <FormLabel id="adaptation-rating">Rating</FormLabel>
@@ -80,6 +104,8 @@ export default function Home() {
                     row
                     aria-labelledby="adaptation-rating"
                     name="rating-buttons-group"
+                    value={rating}
+                    onChange={(e) => {setRating(e.target.value)}}
                   >
                     <FormControlLabel value="1" control={<Radio />} label="1" />
                     <FormControlLabel value="2" control={<Radio />} label="2" />
@@ -103,7 +129,9 @@ export default function Home() {
                   Add New Review
                 </Button>
               </Grid>
+
             </Grid>
+
           </form>
 
           <Box
@@ -114,12 +142,13 @@ export default function Home() {
           >
             <Button
               variant="contained"
+              onClick={loadReviews}
             >
               Load All Current Reviews
             </Button>
           </Box>
 
-          {MOCK_ADAPTATION_RATING.map((adaptation, index)=> {
+          {reviews.map((adaptation, index)=> {
             return <ReviewCard
               key={index}
               title={adaptation.title}
@@ -130,6 +159,7 @@ export default function Home() {
 
         </Container>
       </main>
+
     </div>
   )
 }
