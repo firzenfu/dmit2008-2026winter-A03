@@ -75,10 +75,17 @@ export default function Home() {
       }
     ).then((response)=> {
       return response.json()
-    }).then((data)=> {
+    }).then((movie)=> {
       // when we POST and create something anew, usually a (well-configured) REST API
       // sends us back a body response with the thing we just created.
-      console.log(data)
+
+      // in this example, we're letting the API data control what we render for front-end.
+      // when we get body response back from item we created, use it to update state we render from!
+      // state -> API -> state doesn't have to be strictly coupled like this (for example, I could just
+      // watch for a 201 status code (created successfully) and just update 'reviews' with the local state
+      // data, but I want to show you 'data journey' & POST request/response behaviour in this example).
+
+      setReviews([movie, ...reviews]) // compose new array w/ newly created item -> trigger re-render 
       resetForm();
     })
   }
